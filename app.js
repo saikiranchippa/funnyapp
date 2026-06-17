@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 const db = mysql.createConnection({
-    host: "mysql",
+    host: "mysql-container",
     user: "root",
     password: "root123",
     database: "crazychicken"
@@ -57,12 +57,23 @@ app.post("/login",(req,res)=>{
             if(result.length>0){
                 res.render("home",{user:result[0]});
             }else{
-                res.send("Wrong Credentials 🐔");
+                res.send(`
+
+		    <html>
+                    <body style="background:black;color:red;text-align:center;font-family:Arial">
+                    <h1>🚨 Details Correct Kottu Ra puka! 🚨</h1>
+                    <a href="/login">
+                        <button style="padding:10px;">Try Again</button>
+                    </a>
+                    </body>
+                    </html>
+
+		`);
             }
         }
     );
 });
 
-app.listen(3000,()=>{
+app.listen(3000, "0.0.0.0",()=>{
     console.log("Server Running");
 });
